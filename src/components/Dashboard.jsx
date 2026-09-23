@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useApp } from '../context/AppContext';
 import CircularProgressBar from './CircularProgressBar';
 
-export default function Dashboard({
-  user,
-  modules = [],
-  completedLessonIds = {},
-  onSelectModule,
-  onLogout
-}) {
+export default function Dashboard() {
+  const navigate = useNavigate();
+  const {
+    currentUser,
+    modulesList,
+    completedLessonIds,
+    handleLogout,
+    handleRefreshModules
+  } = useApp();
+
   const [expandedModuleIds, setExpandedModuleIds] = useState({});
 
   const toggleDropdown = (moduleId) => {
@@ -17,17 +22,36 @@ export default function Dashboard({
     }));
   };
 
+  const onLogout = () => {
+    handleLogout();
+    navigate('/');
+  };
+
+  const modules = modulesList || [];
+
   return (
     <div className="dashboard-container">
       {/* Greeting at top */}
-      <h1 className="welcome-header">Welcome, {user.name}!</h1>
+      <h1 className="welcome-header">Welcome, {currentUser?.name}!</h1>
       <p className="welcome-subtitle">Select a module below to view lessons and track your progress.</p>
 
       {/* Modules Section */}
       <div className="modules-section">
-        {/* Left-aligned Modules heading & black bar separator */}
+        {/* Left-aligned Modules heading & Refresh Modules button with speech bubble */}
         <div className="modules-header-container">
-          <h2 className="modules-heading">Modules</h2>
+          <div className="modules-heading-row">
+            <h2 className="modules-heading">Modules</h2>
+            <div className="refresh-btn-wrapper">
+              <button
+                className="icon-btn refresh-modules-btn"
+                onClick={handleRefreshModules}
+                aria-label="Refresh Modules List"
+              >
+                🔄
+              </button>
+              <span className="tooltip-bubble">Refresh Modules List</span>
+            </div>
+          </div>
           <div className="black-horizontal-bar"></div>
         </div>
 
@@ -56,7 +80,7 @@ export default function Dashboard({
 
                   {/* Action controls */}
                   <div className="module-controls">
-                    {/* Green check mark to the left of the drop-down arrow when ALL lessons are complete */}
+                    {/* Green check mark when ALL lessons are complete */}
                     {isAllCompleted && (
                       <span
                         className="green-checkmark module-all-completed-badge"
@@ -76,10 +100,10 @@ export default function Dashboard({
                       {isExpanded ? '▲' : '▼'}
                     </button>
 
-                    {/* Right arrow button -> open module page */}
+                    {/* Right arrow button → open module page */}
                     <button
                       className="icon-btn right-arrow-btn"
-                      onClick={() => onSelectModule(module)}
+                      onClick={() => navigate(`/module/${module.id}`)}
                       title="Open Module Page"
                       aria-label="Open Module Page"
                     >

@@ -1,16 +1,20 @@
 import React from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useApp } from '../context/AppContext';
 
-export default function ModulePage({
-  module,
-  completedLessonIds = {},
-  onSelectLesson,
-  onBackToDashboard
-}) {
+export default function ModulePage() {
+  const { moduleId } = useParams();
+  const navigate = useNavigate();
+  const { modulesList, completedLessonIds } = useApp();
+
+  // Look up this module from the list by ID
+  const module = modulesList.find((m) => m.id === moduleId);
+
   if (!module) {
     return (
       <div>
         <h2>Module Not Found</h2>
-        <button className="btn-blue" onClick={onBackToDashboard}>
+        <button className="btn-blue" onClick={() => navigate('/dashboard')}>
           Back to Dashboard
         </button>
       </div>
@@ -26,7 +30,7 @@ export default function ModulePage({
 
       {/* List of Lesson Cards */}
       <div className="lessons-list">
-        <h2 className="lessons-section-heading">Lessons & Websites</h2>
+        <h2 className="lessons-section-heading">Lessons &amp; Websites</h2>
 
         {lessons.length === 0 ? (
           <p>No lessons available in this module yet.</p>
@@ -51,10 +55,10 @@ export default function ModulePage({
                     </span>
                   )}
 
-                  {/* Right arrow button -> open lesson page */}
+                  {/* Right arrow button → open lesson page */}
                   <button
                     className="icon-btn right-arrow-btn"
-                    onClick={() => onSelectLesson(lesson)}
+                    onClick={() => navigate(`/lesson/${lesson.id}`)}
                     title="Go to Lesson"
                     aria-label={`Go to lesson: ${lesson.title}`}
                   >
@@ -68,7 +72,7 @@ export default function ModulePage({
       </div>
 
       <div style={{ marginTop: '32px' }}>
-        <button className="btn-blue" onClick={onBackToDashboard}>
+        <button className="btn-blue" onClick={() => navigate('/dashboard')}>
           Back to Modules
         </button>
       </div>

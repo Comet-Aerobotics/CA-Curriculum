@@ -1,25 +1,36 @@
 import React, { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useApp } from '../context/AppContext';
 
-export default function LessonPage({
-  lesson,
-  isAlreadyCompleted,
-  onSubmitCompletion,
-  onExitLesson,
-  onBackToModules
-}) {
+export default function LessonPage() {
+  const { lessonId } = useParams();
+  const navigate = useNavigate();
+  const { modulesList, completedLessonIds, handleSubmitLessonCompletion, setErrorMessage } = useApp();
+
   const [screenshotFile, setScreenshotFile] = useState(null);
   const [altMarkComplete, setAltMarkComplete] = useState(false);
+
+  // Derive moduleId from lessonId format: "{moduleId}-lesson-{n}" → e.g. "001"
+  const moduleId = lessonId ? lessonId.split('-')[0] : null;
+
+  // Find the parent module then the lesson within it
+  const parentModule = modulesList.find((m) => m.id === moduleId);
+  const lesson = parentModule
+    ? (parentModule.lessons || []).find((l) => l.id === lessonId)
+    : null;
 
   if (!lesson) {
     return (
       <div>
         <h2>Lesson Not Found</h2>
-        <button className="btn-blue" onClick={onBackToModules}>
+        <button className="btn-blue" onClick={() => navigate('/dashboard')}>
           Back to Modules
         </button>
       </div>
     );
   }
+
+  const isAlreadyCompleted = !!completedLessonIds[lesson.id];
 
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -29,11 +40,15 @@ export default function LessonPage({
 
   const isSubmittable = Boolean(screenshotFile || altMarkComplete);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (isSubmittable) {
+    if (!isSubmittable) return;
+    try {
       const method = screenshotFile ? 'screenshot' : 'checkbox';
-      onSubmitCompletion(lesson.id, screenshotFile, method);
+      await handleSubmitLessonCompletion(lesson.id, screenshotFile, method);
+      navigate(`/module/${moduleId}`);
+    } catch (err) {
+      setErrorMessage(err.message);
     }
   };
 
@@ -114,10 +129,18 @@ export default function LessonPage({
           </button>
 
           <div className="nav-buttons-row">
-            <button type="button" className="btn-secondary" onClick={onExitLesson}>
+            <button
+              type="button"
+              className="btn-secondary"
+              onClick={() => navigate(`/module/${moduleId}`)}
+            >
               Exit Lesson
             </button>
-            <button type="button" className="btn-secondary" onClick={onBackToModules}>
+            <button
+              type="button"
+              className="btn-secondary"
+              onClick={() => navigate('/dashboard')}
+            >
               Back to Modules
             </button>
           </div>
