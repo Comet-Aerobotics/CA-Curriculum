@@ -6,11 +6,10 @@ export default function AdminPinModal({ onSuccess, onCancel }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Default admin PIN: 1234
-    if (pin.trim() === '1234') {
+    if (pin.trim() === '202494') {
       onSuccess();
     } else {
-      setError('Invalid Admin PIN. (Default PIN: 1234)');
+      setError('Invalid Admin PIN.');
     }
   };
 
@@ -24,7 +23,7 @@ export default function AdminPinModal({ onSuccess, onCancel }) {
           <input
             type="password"
             className="input-field"
-            placeholder="Enter PIN (Default: 1234)"
+            placeholder="Enter PIN"
             value={pin}
             onChange={(e) => {
               setPin(e.target.value);
