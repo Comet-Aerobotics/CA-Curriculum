@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { useApp } from '../context/AppContext';
 
 export default function LessonPage() {
@@ -31,6 +33,7 @@ export default function LessonPage() {
   }
 
   const isAlreadyCompleted = !!completedLessonIds[lesson.id];
+  const showWebsiteLink = lesson.hasWebsiteLink !== false && Boolean(lesson.websiteUrl);
 
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -58,17 +61,27 @@ export default function LessonPage() {
       <h1 className="lesson-page-title">{lesson.title}</h1>
       <p className="lesson-duration-badge">Duration: {lesson.duration}</p>
 
-      {/* Website Link */}
-      <div className="website-link-box">
-        <a
-          href={lesson.websiteUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn-secondary website-link-btn"
-        >
-          🌐 Open Website / Lesson ↗
-        </a>
-      </div>
+      {showWebsiteLink && (
+        <div className="website-link-box">
+          <a
+            href={lesson.websiteUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-secondary website-link-btn"
+          >
+            🌐 Open Website / Lesson ↗
+          </a>
+        </div>
+      )}
+
+      {/* Markdown lesson content */}
+      {lesson.content && (
+        <div className="lesson-markdown-content">
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            {lesson.content}
+          </ReactMarkdown>
+        </div>
+      )}
 
       {isAlreadyCompleted && (
         <div className="completed-status-banner">

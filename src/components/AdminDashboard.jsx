@@ -115,6 +115,7 @@ export default function AdminDashboard({ onExitAdmin, onError }) {
             id: `${next3DigitId}-lesson-1`,
             title: 'New Lesson Description',
             duration: '10 mins',
+            hasWebsiteLink: true,
             websiteUrl: 'https://example.com'
           }
         ]
@@ -146,6 +147,7 @@ export default function AdminDashboard({ onExitAdmin, onError }) {
         id: `${mod.id}-lesson-${lessonCount}`,
         title: 'New Lesson Title / Description',
         duration: '15 mins',
+        hasWebsiteLink: true,
         websiteUrl: 'https://example.com'
       };
       if (!mod.lessons) mod.lessons = [];
@@ -434,6 +436,25 @@ export default function AdminDashboard({ onExitAdmin, onError }) {
                         />
                       </div>
 
+                      <div className="editor-field-group">
+                        <label className="checkbox-label">
+                          <input
+                            type="checkbox"
+                            checked={lesson.hasWebsiteLink !== false}
+                            onChange={(e) =>
+                              handleUpdateLesson(
+                                modIdx,
+                                lessonIdx,
+                                'hasWebsiteLink',
+                                e.target.checked
+                              )
+                            }
+                            className="alt-checkbox"
+                          />
+                          <span>Include website link on lesson page</span>
+                        </label>
+                      </div>
+
                       <div className="editor-field-row">
                         <div className="editor-field-group" style={{ flex: 1 }}>
                           <label className="editor-label">Duration Subtitle:</label>
@@ -447,17 +468,34 @@ export default function AdminDashboard({ onExitAdmin, onError }) {
                           />
                         </div>
 
-                        <div className="editor-field-group" style={{ flex: 2 }}>
-                          <label className="editor-label">Website URL:</label>
-                          <input
-                            type="text"
-                            className="input-field editor-input"
-                            value={lesson.websiteUrl || ''}
-                            onChange={(e) =>
-                              handleUpdateLesson(modIdx, lessonIdx, 'websiteUrl', e.target.value)
-                            }
-                          />
-                        </div>
+                        {lesson.hasWebsiteLink !== false && (
+                          <div className="editor-field-group" style={{ flex: 2 }}>
+                            <label className="editor-label">Website URL:</label>
+                            <input
+                              type="text"
+                              className="input-field editor-input"
+                              value={lesson.websiteUrl || ''}
+                              onChange={(e) =>
+                                handleUpdateLesson(modIdx, lessonIdx, 'websiteUrl', e.target.value)
+                              }
+                            />
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="editor-field-group">
+                        <label className="editor-label">
+                          Lesson Content (Markdown supported — paste .md file contents here):
+                        </label>
+                        <textarea
+                          className="input-field editor-textarea lesson-content-textarea"
+                          placeholder={"# Lesson Title\n\nPaste your Markdown content here...\n\n## Section\n- bullet point\n- another point"}
+                          value={lesson.content || ''}
+                          onChange={(e) =>
+                            handleUpdateLesson(modIdx, lessonIdx, 'content', e.target.value)
+                          }
+                          spellCheck={false}
+                        />
                       </div>
                     </div>
                   ))}

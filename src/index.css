@@ -1084,3 +1084,139 @@ p {
   color: #666666;
   font-size: 1rem;
 }
+
+/* Tall content textarea in admin lesson editor */
+.lesson-content-textarea {
+  min-height: 220px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  resize: vertical;
+}
+
+/* Rendered Markdown content on lesson page */
+.lesson-markdown-content {
+  width: 100%;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 24px 28px;
+  margin-bottom: 28px;
+  text-align: left;
+  line-height: 1.7;
+  color: #1a1a1a;
+  font-size: 0.975rem;
+  overflow-wrap: break-word;
+}
+
+.lesson-markdown-content h1,
+.lesson-markdown-content h2,
+.lesson-markdown-content h3,
+.lesson-markdown-content h4,
+.lesson-markdown-content h5,
+.lesson-markdown-content h6 {
+  margin-top: 1.25em;
+  margin-bottom: 0.5em;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #111111;
+}
+
+.lesson-markdown-content h1 { font-size: 1.6rem; border-bottom: 2px solid #e5e7eb; padding-bottom: 0.3em; }
+.lesson-markdown-content h2 { font-size: 1.3rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.2em; }
+.lesson-markdown-content h3 { font-size: 1.1rem; }
+
+.lesson-markdown-content p {
+  margin-bottom: 0.9em;
+}
+
+.lesson-markdown-content ul,
+.lesson-markdown-content ol {
+  padding-left: 1.5em;
+  margin-bottom: 0.9em;
+}
+
+.lesson-markdown-content li {
+  margin-bottom: 0.3em;
+}
+
+.lesson-markdown-content a {
+  color: #0066cc;
+  text-decoration: underline;
+}
+
+.lesson-markdown-content a:hover {
+  color: #0044aa;
+}
+
+.lesson-markdown-content code {
+  background-color: #eef0f3;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.875em;
+  color: #d63369;
+}
+
+.lesson-markdown-content pre {
+  background-color: #1e1e2e;
+  color: #cdd6f4;
+  border-radius: 8px;
+  padding: 16px 20px;
+  overflow-x: auto;
+  margin-bottom: 1em;
+  font-size: 0.875rem;
+  line-height: 1.55;
+}
+
+.lesson-markdown-content pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+
+.lesson-markdown-content blockquote {
+  border-left: 4px solid #0066cc;
+  background-color: #eef4fc;
+  margin: 0 0 1em 0;
+  padding: 10px 16px;
+  border-radius: 0 6px 6px 0;
+  color: #334155;
+  font-style: italic;
+}
+
+.lesson-markdown-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1em;
+  font-size: 0.9rem;
+}
+
+.lesson-markdown-content th,
+.lesson-markdown-content td {
+  border: 1px solid #d1d5db;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.lesson-markdown-content th {
+  background-color: #f1f5f9;
+  font-weight: 700;
+}
+
+.lesson-markdown-content tr:nth-child(even) {
+  background-color: #f8fafc;
+}
+
+.lesson-markdown-content hr {
+  border: none;
+  border-top: 2px solid #e5e7eb;
+  margin: 1.5em 0;
+}
+
+.lesson-markdown-content img {
+  max-width: 100%;
+  border-radius: 6px;
+  margin: 8px 0;
+}
